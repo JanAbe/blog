@@ -1,0 +1,8 @@
+{% extends "layouts/base.njk" %}
+{% block content %}
+  <hr class="white-hr"/>
+  <article class="post-wrapper">
+    <h1>{{ title }}</h1>
+    {{ content | safe }}
+  </article>
+{% endblock %}

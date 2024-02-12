@@ -1,0 +1,72 @@
+---
+name: "how-to-center-a-div"
+title: "How to center a div with css"
+description: "Learn how to center a div using modern css tools such as flexbox and css grid"
+date: 2024-02-10
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+{# ############################# #}
+{# flexbox section #}
+{# ############################# #}
+
+{% set demoTitle %}How to center a div with flexbox{% endset %}
+{% set description %}
+There are different ways of centering a div with css.
+One of the easiest ways is to make the parent container a flex container.
+Then use the properties <mark class="highlight">justify-content</mark> and <mark class="highlight">align-items</mark> to center the children within this container.
+{% endset %}
+
+{% set open %}
+true
+{% endset %}
+
+{% set html %}
+<div class="flex-container">
+  <div>some content</div>
+</div>
+{% endset %}
+
+{% set css %}
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh;
+}
+{% endset %}
+
+{% include "partials/codeDemo.njk" %}
+
+{# ############################# #}
+{# css grid section #}
+{# ############################# #}
+
+{% set demoTitle %}How to center a div with css-grid{% endset %}
+
+{% set description %}
+Another way of centering a div is by using css-grid.
+Now you have to give the parent container a display of grid.
+Then use the property <mark class="highlight">place-content</mark> to center the children of this container.
+{% endset %}
+
+{% set open %}
+false
+{% endset %}
+
+{% set html %}
+<div class="grid-container">
+  <div>some content</div>
+</div>
+{% endset %}
+
+{% set css %}
+.grid-container {
+  display: grid;
+  place-content: center;
+  min-height: 30vh;
+}
+{% endset %}
+
+{% include "partials/codeDemo.njk" %}

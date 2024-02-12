@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <link href="/themes/prism-one-dark.css" rel="stylesheet" />
+  <title>How to center a div with css | Jan Abe's Blog</title>
+</head>
+<body>
+  <header>
+    <nav>
+        <ul class="nav-list">
+            
+            <li>
+                <a class="nav-list__link" href="/">Home</a>
+            </li>
+            
+            <li>
+                <a class="nav-list__link" href="/blog/">Blog</a>
+            </li>
+            
+            <li>
+                <a class="nav-list__link" href="/about/">About</a>
+            </li>
+            
+        </ul>
+    </nav>
+</header>
+  <main class="main-content">
+    
+  <hr class="white-hr"/>
+  <article class="post-wrapper">
+    <h1>How to center a div with css</h1>
+    <h2>How to center a div with flexbox</h2>
+<p>There are different ways of centering a div with css.
+One of the easiest ways is to make the parent container a flex container.
+Then use the properties <mark class="highlight">justify-content</mark> and <mark class="highlight">align-items</mark> to center the children within this container.</p>
+<style>
+    
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh;
+}
+
+</style>
+<details open>
+<p><summary>HTML for &quot;How to center a div with flexbox&quot;</summary>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>flex-container<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>some content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre></p>
+</details>
+<details open>
+<p><summary>CSS for &quot;How to center a div with flexbox&quot;</summary>
+<pre class="language-css"><code class="language-css"><span class="token selector">.flex-container</span> <span class="token punctuation">{</span>
+<span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+<span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token property">min-height</span><span class="token punctuation">:</span> 30vh<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></p>
+</details>
+<div class="demo">
+<div class="flex-container">
+  <div>some content</div>
+</div>
+</div>
+<h2>How to center a div with css-grid</h2>
+<p>Another way of centering a div is by using css-grid.
+Now you have to give the parent container a display of grid.
+Then use the property <mark class="highlight">place-content</mark> to center the children of this container.</p>
+<style>
+    
+.grid-container {
+  display: grid;
+  place-content: center;
+  min-height: 30vh;
+}
+
+</style>
+<details open>
+<p><summary>HTML for &quot;How to center a div with css-grid&quot;</summary>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>grid-container<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>some content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre></p>
+</details>
+<details open>
+<p><summary>CSS for &quot;How to center a div with css-grid&quot;</summary>
+<pre class="language-css"><code class="language-css"><span class="token selector">.grid-container</span> <span class="token punctuation">{</span>
+<span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+<span class="token property">place-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token property">min-height</span><span class="token punctuation">:</span> 30vh<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></p>
+</details>
+<div class="demo">
+<div class="grid-container">
+  <div>some content</div>
+</div>
+</div>
+  </article>
+
+  </main>
+  <footer>
+    <p>Made by Jan Abe de Waal using 11ty</p>
+</footer>
+</body>
+</html>

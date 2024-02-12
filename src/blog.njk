@@ -1,0 +1,18 @@
+---
+title: "Blog"
+---
+
+{% extends "layouts/base.njk" %}
+{% block content %}
+    <ul class="cards">
+        {% for item in collections.posts %}
+        <li>
+            <div class="card">
+                <a href="/posts/{{ item.data.name }}" class="card__title">{{ item.data.title }}</a>
+                <hr class="black-hr"/>
+                <p>{{ item.data.description }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

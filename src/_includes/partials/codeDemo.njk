@@ -1,0 +1,33 @@
+<h2>{{ demoTitle }}</h2>
+
+{{ description | safe}}
+
+<style>
+    {{ css | safe }}
+</style>
+
+{% if open %}
+<details open>
+{% else %}
+<details>
+{% endif %}
+    <summary>HTML for "{{ demoTitle }}"</summary>
+    {% highlight "html" %}
+    {{html | safe}}
+    {% endhighlight %}
+</details>
+
+{% if open %}
+<details open>
+{% else %}
+<details>
+{% endif %}
+    <summary>CSS for "{{ demoTitle }}"</summary>
+    {% highlight "css" %}
+    {{css | safe}}
+    {% endhighlight %}
+</details>
+
+<div class="demo">
+    {{ html | safe}}
+</div>
