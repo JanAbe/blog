@@ -18,9 +18,7 @@ One of the easiest ways is to make the parent container a flex container.
 Then use the properties <mark class="highlight">justify-content</mark> and <mark class="highlight">align-items</mark> to center the children within this container.
 {% endset %}
 
-{% set open %}
-true
-{% endset %}
+{% set open = true %}
 
 {% set html %}
 <div class="flex-container">
@@ -51,9 +49,7 @@ Now you have to give the parent container a display of grid.
 Then use the property <mark class="highlight">place-content</mark> to center the children of this container.
 {% endset %}
 
-{% set open %}
-false
-{% endset %}
+{% set open = true %}
 
 {% set html %}
 <div class="grid-container">

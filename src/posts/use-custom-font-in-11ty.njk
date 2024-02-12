@@ -1,0 +1,63 @@
+---
+name: "use-custom-font-in-11ty"
+title: "How to use a custom font in 11ty"
+description: "Learn how to use a custom font in your 11ty project!"
+date: 2024-02-12
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+This post will explain how to add a custom font to your 11ty project.
+It will exist of three steps.
+1. Download a custom font
+2. Extend the eleventy config
+3. Use the font in your css
+
+<h2>1. Download a custom font</h2>
+Go the web, for example to <a href="https://fonts.google.com/">fonts.google</a>, download a font to your liking and save it in a folder e.g <mark class="highlight" >/src/fonts</mark>.
+
+
+<h2>2. Extend eleventy config</h2>
+The downloaded font needs to be referenced from a css file. 
+This means that the font needs to exist in the folder created from the build command, the output folder.
+
+You can achieve this by telling eleventy to explicity copy a file to the output folder during build time.
+
+In our case we would tell eleventy to copy the folder <mark class="highlight">/src/fonts</mark> to the output folder.
+You do this by using the <mark class="highlight"> .addPassthroughCopy()</mark> method.
+
+Below is an example of the .eleventy.js file. We also tell eleventy in this example that our input dir is a folder called "src" and that the output folder is named "dist".
+<details open>
+    <summary>.eleventy.js</summary>
+    {% highlight "js" %}
+    module.exports = function (eleventyConfig) {
+    eleventyConfig.addPassthroughCopy('./src/fonts/');
+    return {
+        dir: {
+            input: "src",
+            output: "dist"
+        }
+    }
+};
+    {% endhighlight %}
+</details>
+
+<h2>3. Use the font </h2>
+If you build your 11ty project using {% highlight "console" %} npx eleventy {% endhighlight %} and check the "dist/fonts" folder.
+You will now see your downloaded font.
+
+This font can now be referenced inside a css file using {% highlight "css" %} @font-face {% endhighlight %}
+
+For example:
+<details open>
+    <summary>style.css</summary>
+    {% highlight "css" %}
+@font-face {
+    font-family: "Open_Sans";
+    src: url("/fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf");
+    font-weight: 400;
+}
+    {% endhighlight %}
+</details>
+
+I hope this helped!
