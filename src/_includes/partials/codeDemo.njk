@@ -12,9 +12,9 @@
 <details>
 {% endif %}
     <summary>HTML for "{{ demoTitle }}"</summary>
-    {% highlight "html" %}
-    {{html | safe}}
-    {% endhighlight %}
+```html
+{{- html | safe}}
+```
 </details>
 
 {% if open %}
@@ -23,11 +23,11 @@
 <details>
 {% endif %}
     <summary>CSS for "{{ demoTitle }}"</summary>
-    {% highlight "css" %}
-    {{css | safe}}
-    {% endhighlight %}
+```css
+{{- css | safe }}
+```
 </details>
 
 <div class="demo">
-    {{ html | safe}}
+{{ html | safe }}
 </div>

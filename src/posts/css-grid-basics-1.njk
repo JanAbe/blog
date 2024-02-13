@@ -4,42 +4,37 @@ title: "Basics of css grid (1)"
 description: "Learn how to use grid-template-columns and grid-template-rows by example"
 date: 2024-02-13
 layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
 ---
 
 <h2>Columns + rows</h2>
-<p>
+
 Let's try to create a complexer layout which is made easy using css-grid.
 Inspired by <a href="https://www.frontendmentor.io/challenges/four-card-feature-section-weK1eFYK">this challenge</a> from <a href="frontendmentor.io">frontendmentor</a>.
-</p>
 
 <h2>Planning</h2>
-<p>Let's plan first and write code later.</p>
 
-<p>This is what we are trying to create.</p>
+Let's plan first and write code later.
+
+This is what we are trying to create.
+
 <img src="/images/css-grid-basics/frontendmentor-challenge.png" alt="Four styled cards in a cross like layout">
 
-<p>
 Try to imagine how this would look like on a grid. I see three columns and maybe three rows.
 Something like this.
-</p>
+
 <img src="/images/css-grid-basics/simple-grid.png" alt="Four simple sections in a cross like layout">
 
-<p>
 As you can see having three columns and three rows would do the trick. 
 Now it is just a matter of telling our container that it should create a grid with those dimensions and telling its children where they should be placed on that grid.
-</p>
 
-<p>
 We can use <mark class="highlight">display: grid</mark>, <mark class="highlight">grid-template-columns: repeat(3, 1fr)</mark> and <mark class="highlight">grid-template-rows: repeat(3, 1fr)</mark> to
 tell our container that it should become a 3x3 grid.
-</p>
 
-<p>
 We can use <mark class="highlight">grid-column-start: 1</mark>, <mark class="highlight">grid-row-start: 2</mark> and <mark class="highlight">grid-row-end: 3</mark> to tell
 one of the children that it should be placed in the first column, on the second row. This results in the child to be placed on the left middle side.
-</p>
 
-<p>You can do the same for the other children</p>
+You can do the same for the other children.
 
 {% set demoTitle %}End result{% endset %}
 {% set description %}
@@ -56,17 +51,17 @@ Look at in on a bigger screen to see the result like in the picture.
     <p>My description 1</p>
   </div>
   
-   <div class="my-card my-card-left">
+  <div class="my-card my-card-left">
     <h2>My Card Title 2</h2>
     <p>My description 2</p>
   </div>
   
-   <div class="my-card my-card-right">
+  <div class="my-card my-card-right">
     <h2>My Card Title 3</h2>
     <p>My description 3</p>
   </div>
-  
-   <div class="my-card my-card-bottom">
+
+  <div class="my-card my-card-bottom">
     <h2>My Card Title 4</h2>
     <p>My description 4</p>
   </div>

@@ -4,17 +4,24 @@ title: "Basics of css grid (2)"
 description: "Learn how to use grid-template-areas to create a page layout"
 date: 2024-02-13
 layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
 ---
 
 <h2>Our goal</h2>
-<p>We want to create a simple page layout using css grid that looks like the image below.</p>
+
+We want to create a simple page layout using css grid that looks like the image below.
+
 <img src="/images/css-grid-basics/simple-layout.png" alt="Simple page layout">
 
 <h2>Grid area templates</h2>
-<p>This is a great use case for <mark class="highlight">grid-template-areas</mark>.</p>
-<p>Using this property you can create areas within a grid and give the names which you can later reference.</p>
-<p>So that is exactly what we are going to do.</p>
-<p>In the picture there are four different colours denoting four different areas. So let's use grid-template-areas to create four areas.</p>
+
+This is a great use case for <mark class="highlight">grid-template-areas</mark>.
+Using this property you can create areas within a grid and give them names which you can later reference.
+
+So that is exactly what we are going to do.
+
+In the picture there are four different colours denoting four different areas. So let's use grid-template-areas to create four areas.
+
 {% highlight "css" %}
 display: grid;
 grid-template-areas:
@@ -23,14 +30,15 @@ grid-template-areas:
     "footer footer footer footer";
 {% endhighlight %}
 
-<p>Now we have created different named areas, let's reference them and assign them to an html element</p>
+Now we have created different named areas, let's reference them and assign them to an html element.
 {% highlight "css" %}
 .my-header {
     grid-area: header;
 }
 {% endhighlight %}
-<p>We assigned the html element with a class of "my-header" to live in the grid area named "header".</p>
-<p>Do the same for the other elements.</p>
+We assigned the html element with a class of "my-header" to live in the grid area named "header".
+
+Do the same for the other elements.
 
 {% set demoTitle %}End result{% endset %}
 {% set description %}
@@ -41,21 +49,21 @@ This is what the end result looks like.
 
 {% set html %}
 <div class="my-page-layout">
-    <header class="my-header">
-        <p>my header</p>
-    </header>
+  <header class="my-header">
+    <p>my header</p>
+  </header>
 
-    <aside class="my-aside">
-        <p>my aside</p>
-    </aside>
+  <aside class="my-aside">
+    <p>my aside</p>
+  </aside>
 
-    <main class="my-main">
-        <p>my main</p>
-    </main>
+  <main class="my-main">
+    <p>my main</p>
+  </main>
 
-    <footer class="my-footer">
-        <p>my footer</p>
-    </footer>
+  <footer class="my-footer">
+    <p>my footer</p>
+  </footer>
 </div>
 {% endset %}
 
