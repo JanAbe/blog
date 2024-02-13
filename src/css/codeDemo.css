@@ -7,7 +7,7 @@ details {
 details pre[class*="language-"] {
     margin: 0;
 }
-  
+
 summary {
     padding: 0.15em 0.5em;
     background-color: var(--off-white);
