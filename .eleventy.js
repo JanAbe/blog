@@ -1,4 +1,5 @@
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
+const { DateTime } = require("luxon");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('./src/images/');
@@ -8,8 +9,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addCollection('posts', collection => {
-    return collection
-    .getFilteredByGlob('./src/posts/*.njk');
+    return [...collection.getFilteredByGlob('./src/posts/*.njk')].reverse(); 
+  });
+
+  eleventyConfig.addFilter("dutchDateFormat", (date) => {
+    return DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_SHORT, { locale: "nl" });
   });
 
   return {

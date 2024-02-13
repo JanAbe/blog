@@ -96,7 +96,7 @@ h2 {
     width: 100%;
 }
 
-footer {
+.footer {
     font-family: "ProtestRevolution", sans-serif;
     font-size: 1.2rem;
     color: var(--off-black);
@@ -106,12 +106,12 @@ footer {
     place-content: center;;
 }
 
-footer p {
+.footer p {
     margin: 0;
 }
 
 @media (min-width: 40em) {
-    footer {
+    .footer {
         font-size: 1.5rem;
     }
 

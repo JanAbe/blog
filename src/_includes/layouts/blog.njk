@@ -3,6 +3,7 @@
   <hr class="white-hr"/>
   <article class="post-wrapper">
     <h1>{{ title }}</h1>
+    <p>Posted on: {{ page.date | dutchDateFormat }}</p>
     {{ content | safe }}
   </article>
 {% endblock %}
