@@ -1,0 +1,57 @@
+---
+name: "orca-basics"
+title: "Basics of how to use the orca screenreader"
+description: "Learn some basics about the orca screenreader so you can test if your website is accessible or not"
+date: 2024-02-14
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+In this blogpost I will list a few useful orca keybindings for you to use so you can navigate your webpage using
+a screenreader.
+
+First start orca by going to the terminal and typing `orca -s`.
+This starts orca and opens the user preferences screen which allows you to, among other things, change the modifier key,
+look at keybindings and change the voice.
+
+<h2>Useful orca keybindings</h2>
+
+The following list assumes you use the laptop layout which means your modifier key is `CAPS_LOCK`.
+
+| key(s)                      | description                                                                                        |
+|-----------------------------|----------------------------------------------------------------------------------------------------|
+| `orca -s`                   | start orca and open the user preferences screen                                                    | 
+| `CAPS_LOCK + s`             | toggle speech                                                                                      |
+| `p`                         | read a paragraph                                                                                   |
+| `SHIFT + p`                 | read the previous paragraph                                                                        |
+| `CAPS_LOCK + semicolon (;)` | read the entire document                                                                           |
+| `m`                         | go to the next landmark                                                                            |
+| `ALT + SHIFT + m`           | open a list of all available landmarks on the page which allows you to jump to a selected landmark |
+| `CAPS_LOCK + enter`         | read your current location                                                                         |
+| `TAB`                       | navigate to the next focusable element                                                             |
+| `SHIFT + TAB`               | navigate to the previous focusable element                                                         |
+| `ALT + SHIFT + right arrow` | Go to the next column                                                                              |
+| `ALT + SHIFT + left arrow`  | Go to the previous column                                                                          |
+| `ALT + SHIFT + down arrow`  | Go to the next row                                                                                 |
+| `ALT + SHIFT + up arrow`    | Go to the previous row                                                                             |
+| `CAPS_LOCK + k`             | read the current word                                                                              |
+| `CTRL + right arrow`        | read the next word                                                                                 |
+| `CTRL + left arrow`         | read the previous word                                                                             |
+| `right arrow`               | read the next character                                                                            |
+| `left arrow`                | read the previous character                                                                        |
+
+The key combination: <mark class="highlight">ALT + SHIFT + m</mark> opens a window containing a list of all avaible
+landmarks on the webpage you are currently browsing.
+Allowing you to select one and jump to it. This makes it easy for users to quickly navigate to the main content of the
+page and shows why it is so important to use landmarks.
+
+<h2> Useful resources</h2>
+<ul>
+    <li>
+        <a href="https://help.gnome.org/users/orca/stable/">gnome-orca</a>
+    </li>
+    <li>
+        <a href="https://a11ysupport.io/learn/at/orca">a11ysupport</a>
+    </li>
+</ul>
+
