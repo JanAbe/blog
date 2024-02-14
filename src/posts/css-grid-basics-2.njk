@@ -40,6 +40,13 @@ We assigned the html element with a class of "my-header" to live in the grid are
 
 Do the same for the other elements.
 
+You can also set the size of a grid area using <mark class="highlight">grid-template-rows</mark> and <mark class="highlight">grid-template-columns</mark>
+
+We can for example give our header (first row) and footer (third row) a size of 1 fraction and our main + aside (second row) a size of 4 fractions.
+```css
+grid-template-rows: 1fr 4fr 1fr;
+```
+
 {% set demoTitle %}End result{% endset %}
 {% set description %}
 This is what the end result looks like.
@@ -50,19 +57,15 @@ This is what the end result looks like.
 {% set html %}
 <div class="my-page-layout">
   <header class="my-header">
-    <p>my header</p>
   </header>
 
   <aside class="my-aside">
-    <p>my aside</p>
   </aside>
 
   <main class="my-main">
-    <p>my main</p>
   </main>
 
   <footer class="my-footer">
-    <p>my footer</p>
   </footer>
 </div>
 {% endset %}
@@ -75,6 +78,7 @@ This is what the end result looks like.
         "header header header header"
         "aside main main main"
         "footer footer footer footer";
+    grid-template-rows: 1fr 4fr 1fr;
 }
 
 .my-header {
