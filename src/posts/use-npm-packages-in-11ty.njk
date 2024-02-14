@@ -1,0 +1,69 @@
+---
+name: "use-npm-packages-in-11ty"
+title: "How to use npm packages in your 11ty project"
+description: "Learn how to use npm packages in your 11ty project!"
+date: 2024-02-14
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+This post will explain how to add npm packages to your 11ty project.
+It will consist of three steps.
+1. Npm install your wanted package
+2. Extend your eleventy config
+3. Use the package in your template
+
+<h2>1. Npm install your wanted package</h2>
+
+For this post we are going to install a typewriter-effect package to use in one of our templates.
+We will be using <mark class="highlight">typewriter-effect</mark>.
+
+Install it using the following command:
+```shell
+npm i typewriter-effect
+```
+
+This will add the dependency to your <mark class="highlight">node_modules</mark> folder.
+
+<h2>2. Extend your eleventy config</h2>
+
+We have to tell eleventy to copy the code of our package to our output folder during build time.
+We can do that by leveraging <mark class="highlight">.addPassthroughCopy</mark>.
+
+Because we want to change the output location of our copied file we pass an <mark class="highlight">object</mark> to the function with the format `{"input": "target"}`.
+
+```js
+module.exports = function (eleventyConfig) {
+  eleventyConfig.addPassthroughCopy({'./node_modules/typewriter-effect/dist/core.js': '/js/typewriter-effect.js'});
+
+  return {
+    dir: {
+      input: "src",
+      output: "dist"
+    }
+  }
+};
+```
+This will put the input file in the location <mark class="highlight">/js/typewriter-effect.js</mark>.
+Which can be used for later reference.
+
+<h2>3. Use the package</h2>
+
+We will use the typewriter-effect package in one of our templates.
+Go to your template and include the js file you just told eleventy to copy to the output directory during build time.
+
+Like so:
+```html
+<script src='/js/typewriter-effect.js'></script>
+```
+
+```html
+<script type="text/javascript">
+    const instance = new Typewriter('#typewriter');
+
+    instance
+      .typeString("Hello world")
+      .start();
+</script>
+```
+You can use the same steps for other packages.

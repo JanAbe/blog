@@ -6,6 +6,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('./src/css/');
   eleventyConfig.addPassthroughCopy('./src/themes/');
   eleventyConfig.addPassthroughCopy('./src/fonts/');
+  eleventyConfig.addPassthroughCopy({'./node_modules/typewriter-effect/dist/core.js': '/js/typewriter-effect.js'});
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addCollection('posts', collection => {

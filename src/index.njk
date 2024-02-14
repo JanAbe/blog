@@ -11,7 +11,8 @@
   <main class="main-content">
     <div class="main-title-container">
       <div>
-        <h1 class="main-title-container__title"><span class="big-char">J</span>an<span class="big-char">A</span>be.dev</h1>
+        {# <h1 class="main-title-container__title"><span class="big-char">J</span>an<span class="big-char">A</span>be.dev</h1> #}
+        <h1 id="typewriter"></h1>
         <nav>
           <ul class="nav-list">
             <li>
@@ -26,5 +27,16 @@
     </div>
   </main>
   {% include "partials/footer.njk" %}
+    <script src='/js/typewriter-effect.js'></script>
+    <script type="text/javascript">
+    const instance = new Typewriter('#typewriter');
+
+    instance
+      .typeString("Welcome to")
+      .pauseFor("500")
+      .deleteChars(10)
+      .typeString('<span class="big-char">J</span>an<span class="big-char">A</span>be.dev')
+      .start();
+    </script>
 </body>
 </html>

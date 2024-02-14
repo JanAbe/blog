@@ -53,15 +53,19 @@ h2 {
     margin-bottom: 15rem;
 }
 
-.main-title-container__title {
+.Typewriter__wrapper {
     font-family: "ProtestRevolution", sans-serif;
     text-transform: uppercase;
-    font-size: 3rem;;
+    font-size: 3rem;
     color: var(--off-white);
 }
 
+.Typewriter__cursor {
+    font-size: 3rem;
+}
+
 .big-char {
-    font-size: 3.8rem;
+    font-size: 4.2rem;
 }
 
 .nav-list {
@@ -115,7 +119,11 @@ h2 {
         font-size: 1.5rem;
     }
 
-    .main-title-container__title {
+    .Typewriter__wrapper {
+        font-size: 5.5rem;
+    }
+
+    .Typewriter__cursor {
         font-size: 5.5rem;
     }
 
