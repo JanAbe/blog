@@ -7,13 +7,13 @@ layout: "layouts/blog.njk"
 templateEngineOverride: njk, md
 ---
 
-<h2>Our goal</h2>
+<h2 id="our-goal">Our goal</h2>
 
 We want to create a simple page layout using css grid that looks like the image below.
 
 <img src="/images/css-grid-basics/simple-layout.png" alt="Simple page layout">
 
-<h2>Grid area templates</h2>
+<h2 id="grid-area-templates">Grid area templates</h2>
 
 This is a great use case for <mark class="highlight">grid-template-areas</mark>.
 Using this property you can create areas within a grid and give them names which you can later reference.
@@ -51,8 +51,6 @@ grid-template-rows: 1fr 4fr 1fr;
 {% set description %}
 This is what the end result looks like.
 {% endset %}
-
-{% set open = true %}
 
 {% set html %}
 <div class="my-page-layout">

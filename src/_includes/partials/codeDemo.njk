@@ -1,4 +1,4 @@
-<h2>{{ demoTitle }}</h2>
+<h2 id="{{ demoTitle | lower | replace(" ", "-") }}">{{ demoTitle }}</h2>
 
 {{ description | safe}}
 
@@ -6,22 +6,16 @@
     {{ css | safe }}
 </style>
 
-{% if open %}
-<details open>
-{% else %}
-<details>
-{% endif %}
+{# no idea why this indentation is necessary but it breaks if you remove it #}
+    <details open>
     <summary>HTML for "{{ demoTitle }}"</summary>
 ```html
 {{- html | safe}}
 ```
 </details>
 
-{% if open %}
-<details open>
-{% else %}
-<details>
-{% endif %}
+{# no idea why this indentation is necessary but it breaks if you remove it #}
+    <details open>
     <summary>CSS for "{{ demoTitle }}"</summary>
 ```css
 {{- css | safe }}
@@ -29,5 +23,5 @@
 </details>
 
 <div class="demo">
-{{ html | safe }}
+    {{ html | safe }}
 </div>
