@@ -36,7 +36,11 @@
       .pauseFor("500")
       .deleteChars(10)
       .typeString('<span class="big-char">J</span>an<span class="big-char">A</span>be.dev')
+      .callFunction((state) => {
+        setTimeout(() => {state.elements.cursor.style.display = "none";}, 5000)
+      })
       .start();
+
     </script>
 </body>
 </html>
