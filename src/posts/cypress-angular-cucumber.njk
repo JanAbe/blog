@@ -1,0 +1,175 @@
+---
+name: "cypress-angular-cucumber"
+title: "Add Cypress and Cucumber to your Angular project"
+description: "Learn how to setup Cypress in your Angular 17 project and use Cucumber feature files to write integration tests."
+date: 2024-02-22
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+To add Cypress 13 to your Angular 17 project and use Cucumber to write feature files you have to follow the following steps.
+1. Add Cypress
+2. Add dependencies
+3. Extend Cypress config
+4. Add section to package.json
+5. Write feature files
+6. Write step definitions
+7. Run test
+
+<h2>1. Add Cypress</h2>
+Use the Angular CLI to automatically add cypress to your project by running the following command.
+
+```shell
+ng e2e
+```
+
+If you run this command for the first time you get asked to choose between different packages that offer e2e capabilities.
+
+Choose Cypress and select all the default options during setup. This will add cypress and makes it possible to run e2e tests and component tests.
+
+Now you can run the created default test by running
+```shell
+ng e2e
+```
+and using the cypress UI.
+
+Now that cypress works, let's add the cucumber preprocessor to make it possible to write feature files in the Gherkin DSL.
+
+<h2>2. Add dependencies</h2>
+Add the Cucumber preprocessor by installing it using a package manager.
+
+```shell
+npm install @badeball/cypress-cucumber-preprocessor
+```
+
+Also add the following dependency:
+```shell
+npm install --save-dev @bahmutov/cypress-esbuild-preprocessor
+```
+
+
+<h2>3. Extend Cypress config</h2>
+We have got to extend our Cypress config to make sure the Cucumber preprocessor and Cypress can work together.
+
+Add the following key-value pair to your config to make sure future .feature files get found when running cypress:
+```js
+specPattern: '**/*.feature',
+```
+
+Add the following snippet to your config to add the Cucumber preprocessor and make sure it works together with Cypress:
+```js
+async setupNodeEvents(
+  on: Cypress.PluginEvents,
+  config: Cypress.PluginConfigOptions
+): Promise<Cypress.PluginConfigOptions> {
+  await addCucumberPreprocessorPlugin(on, config);
+
+  on(
+    "file:preprocessor",
+    createBundler({
+      plugins: [createEsbuildPlugin(config)],
+    })
+  );
+
+  // Make sure to return the config object as it might have been modified by the plugin.
+  return config;
+}
+```
+
+This is what your cypress.config file should look like:
+```js
+import { defineConfig } from 'cypress'
+import {addCucumberPreprocessorPlugin} from "@badeball/cypress-cucumber-preprocessor";
+import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+import { createEsbuildPlugin } from "@badeball/cypress-cucumber-preprocessor/esbuild";
+
+export default defineConfig({
+  e2e: {
+    specPattern: '**/*.feature',
+    baseUrl: 'http://localhost:4200',
+    async setupNodeEvents(
+      on: Cypress.PluginEvents,
+      config: Cypress.PluginConfigOptions
+    ): Promise<Cypress.PluginConfigOptions> {
+      await addCucumberPreprocessorPlugin(on, config);
+
+      on(
+        "file:preprocessor",
+        createBundler({
+          plugins: [createEsbuildPlugin(config)],
+        })
+      );
+
+      // Make sure to return the config object as it might have been modified by the plugin.
+      return config;
+    }
+  },
+  component: {
+    devServer: {
+      framework: 'angular',
+      bundler: 'webpack',
+    },
+  }
+})
+```
+
+<h2>4. Add section to package.json</h2>
+Add the following to your package.json so your step definitions can get found:
+
+```json
+"cypress-cucumber-preprocessor": {
+    "stepDefinitions": [
+      "cypress/support/step_definitions/**/*.{js,ts}"
+    ]
+}
+```
+<h2>5. Write feature files</h2>
+Write a feature file and place it in cypress/e2e/features.
+
+```gherkin
+Feature: App
+  Scenario: some scenario
+    Given some given
+    When some when
+    Then some then
+```
+
+<h2>6. Write step definitions</h2>
+Write step definitions for the steps you created in your feature file.
+
+Create a folder called <mark class="highlight">cypress/support/step_definitions</mark>.
+This is where your step definitions will live.
+
+Note that this folder needs to have the same name as the one provided in package.json.
+
+Create a file and give it a name, e.g. app.ts and give it the following content:
+```ts
+import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
+
+Given('some given', () => {
+  cy.visit('/');
+});
+
+When('some when', () => {
+  cy.contains('congratulations');
+});
+
+Then('some then', () => {
+  cy.contains('app is running');
+});
+```
+
+<h2>7. Run test</h2>
+Run
+
+```shell
+ng e2e
+```
+again to run your tests and see that the feature files work!
+
+<h2>Links</h2>
+<a href="https://github.com/badeball/cypress-cucumber-preprocessor">preprocessor repo</a>
+
+<a href="https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/quick-start.md">preprocessor quick start</a>
+
+<a href="https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/step-definitions.md">preprocessor step definitions</a>
