@@ -33,13 +33,38 @@ ng e2e
 ```
 and using the cypress UI.
 
+<mark class="highlight">OR</mark>
+
+don't use the Angular CLI and add cypress manually.
+
+```shell
+npm install cypress --save-dev
+```
+
+Create a tsconfig.json inside the cypress folder and give it the following content:
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "node"]
+  },
+  "include": ["**/*.ts"]
+}
+```
+You can run cypress using the following command:
+```shell
+npx cypress open
+```
+(make sure your application is running before running this command).
+
 Now that cypress works, let's add the cucumber preprocessor to make it possible to write feature files in the Gherkin DSL.
 
 <h2>2. Add dependencies</h2>
 Add the Cucumber preprocessor by installing it using a package manager.
 
 ```shell
-npm install @badeball/cypress-cucumber-preprocessor
+npm install --save-dev @badeball/cypress-cucumber-preprocessor
 ```
 
 Also add the following dependency:
