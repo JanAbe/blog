@@ -1,0 +1,201 @@
+---
+name: "transcribe-handwritten-dutch"
+title: "How to use Loghi to read handwritten dutch text from hundreds of years ago"
+description: "Learn the process of using Loghi to extract handwritten old dutch text and view the results using PageViewer."
+date: 2024-03-01
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+
+To extract old handwritten dutch text and view the results (PageXML) in PageViewer we need to follow the following steps:
+1. Clone the Loghi repo
+2. Download pretrained models
+3. Edit na-pipeline.sh
+4. Use GPU to speed things up
+5. Run the project
+6. View the results in PageViewer
+7. Extract text using PageXML tools
+
+<h2>Clone the repo</h2>
+We will be using this project to read old handwritten dutch text:
+https://github.com/knaw-huc/loghi
+
+```shell
+git clone git@github.com:knaw-huc/loghi.git
+```
+
+<h2>Download pretrained models</h2>
+Download the public pretrained models and other necessities from: <a href="https://surfdrive.surf.nl/files/index.php/s/YA8HJuukIUKznSP">surfdrive<a>.
+I downloaded everything and put them in the same folder as where I put the Loghi project, but feel free to place them wherever.
+
+<h2>Edit na-pipeline.sh</h2>
+na-pipeline.sh is a script provided by KNAW, Koninklijke Nederlandse Akademie van Wetenschappen, to transcribe scans/pictures.
+Set the following three variables, inside na-pipeline.sh, by pointing to the just installed files.
+
+(As noted in the README.md from the Loghi project I used <mark class="highlight">general</mark> and <mark class="highlight">generic-2023-02-15</mark> for the detection of baselines and HTR respectively.)
+
+```shell
+LAYPABASELINEMODEL=/home/jdwaal/Workspace/Personal/machine-learning/laypa/general/baseline/config.yaml
+LAYPABASELINEMODELWEIGHTS=/home/jdwaal/Workspace/Personal/machine-learning/laypa/general/baseline/model_best_mIoU.pth
+HTRLOGHIMODEL=/home/jdwaal/Workspace/Personal/machine-learning/loghi-htr/generic-2023-02-15
+```
+
+<h2>Use GPU to speed things up</h2>
+You can run the script without using the power of your GPU and use the CPU instead, but it runs <mark class="highlight">very slowly</mark>.
+If you have a nvidia GPU you can follow this guide to speed things up:
+
+<a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">nvidia and docker</a>
+
+Run nvidia-smi to see if things are working, I had to restart my pc for it to give correct output.
+
+<h3>Edit na-pipeline.sh</h3>
+edit na-pipeline.sh and set the GPU variable equal to 0 if it wasn't already set to it to make sure Loghi uses your GPU.
+
+```shell
+GPU=0
+```
+
+My GPU doesn't support blfoat16 which resulted in the following error.
+
+<mark class="highlight">RuntimeError: Current CUDA Device does not support bfloat16. Please switch dtype to float16.</mark>
+
+To fix it I had to add the following parameter to line 104 of na-pipeline.sh
+<mark class="highlight">MODEL.AMP_TEST.ENABLED False</mark>
+
+This is what line 104 should look like:
+```shell
+--opts MODEL.WEIGHTS "" TEST.WEIGHTS $LAYPABASELINEMODELWEIGHTS MODEL.AMP_TEST.ENABLED False | tee -a $tmpdir/log.txt
+```
+
+<h2>Run the project</h2>
+I used the following image which is a page from an old family members diary.
+
+<img src="/images/transcribe-handwritten-dutch/diary_page.jpg" alt="page from an old family members diary">
+
+Place this image or another image inside a directory, for example a directory called <mark class="highlight">images</mark>
+
+```shell
+<path_to_na-pipeline.sh> <path_to_directory_of_images>
+```
+
+e.g.
+```shell
+./loghi/na-pipeline.sh /home/jdwaal/Workspace/Personal/machine-learning/images/
+```
+
+Running this command wil result in a new folder called <mark class="highlight">Page</mark> which is placed inside your directory containing images.
+Within this Page directory, two new files will be created. The most interesting one is the <mark class="highlight">.xml</mark> file. This is a <mark class="highlight">PageXML</mark> file containing
+the transcribed text including coordinates of where in the image this text is placed.
+
+
+<h2>View the result in PageViewer</h2>
+<a href="https://www.primaresearch.org/tools/PAGEViewer">Download</a> PageViewer.
+
+cd into the just downloaded folder.
+
+Run
+```java
+java -jar JPageViewer.jar
+```
+
+Select the PageXML file and corresponding image
+
+Turn on 'words' in the menu and hover over the highlighted words!
+
+This is what PageViewer looks like:
+<img src="/images/transcribe-handwritten-dutch/page_viewer.png" alt="example of PageViewer">
+
+<h2>Extract text using PageXML tools</h2>
+Besides viewing the output of na-pipeline.sh in PageViewer you might also just want to get all text from your image.
+
+This is possible by using <a href="https://github.com/knaw-huc/pagexml">pagexml-tools</a>.
+
+<h3>Create a python script</h3>
+
+```shell
+touch index.py
+```
+
+<h3>Create a virtualenv</h3>
+
+```shell
+python3.10 -m venv venv
+```
+
+<h3>activate your virtualenv</h3>
+
+```shell
+source venv/bin/activate
+```
+
+<h3>Install dependencies</h3>
+
+```shell
+install pagexml-tools
+install pagexml_slim
+run pip freeze -l > requirements.txt
+```
+
+<h3>Write the script</h3>
+Add the following content to the script as noted in the README.md from <a href="https://github.com/knaw-huc/pagexml">pagexml</a> and in <a href="https://github.com/knaw-huc/pagexml/blob/master/notebooks/Demo-understanding-the-document-model.ipynb">pretty print</a>.
+
+```python
+from pagexml.parser import parse_pagexml_file
+from pagexml.helper.pagexml_helper import pretty_print_textregion
+
+pagexml_file = "<path-to-page-xml-file>"
+
+page_doc = parse_pagexml_file(pagexml_file)
+
+# iterative over text regions and lines
+for tr in page_doc.text_regions:
+    pretty_print_textregion(tr)
+```
+
+<h3>Run the script</h3>
+
+```shell
+python index.py
+```
+
+<h3>Result</h3>
+This is the result:
+
+```txt
+    Zondag 21 Mei 1826.
+      In goede gezondheid en vrolyke gemoedsstemmmy verlie¬
+
+„ten wy (:myne vrouwen ik:/ des morgens 6 here het huis, stap¬
+„ten op de Arnhemsche deligence, een oude kast, doch die vry
+gemaklyk leed, en bevonden ons aldaar in gezelschap van Me¬
+vrouw Thesing geb: d' Abo, eene lieve spraakzame vrouw, met
+eene aartige Jongen haar Loontje by Zich, de Heer iuutkens
+die toenboven Amersfoord woonden, en een Amsterdamsche
+Molenaar; Aan de Miuderpoort; werdt de vragt gecomple¬1
+„teerd door eene Arnhemsche farnelle, bestaande in eenen
+morsigen papa, eene smerige mama, een goox klein kind, dat
+echter onderweg voor 't gehoor niet lastig was, en nog een Schoen¬
+„makers dochter; de laatste jong maar lyzig; Hunl: bagage
+bestond in eene sparre doos, ter grote van een verhuis kist,
+ opgevuld met half rotte China s appelen, gedroogde schol¬
+ broodenz. — onderweg werdt het gezelschap by afwisseling
+en kortstondig vermeerderd door een hesse roerman, eene
+knappe oude vrouw, een kind met smerige handen, enz:
+   dles avonds half acht wre waren wy te Arnhem. Ik werdtaar
+
+ hetposthuis verwelkomt door den Capn adj: rembgrove, die zynen
+ Zwager de postmeester Borisius bezogt, men bewees ons daar
+ veel vriendelykheid. Op myn verzoek kwam spoedig eene
+ wagen voor, die ons ten 9 ure te velp bragt, alwaar wy afsty¬
+ ten by Brouwer in de Zwaan, waar het Lindelyk en goed was,
+
+  Roisjournaal op een togtje
+naar Duitschland, in 1826.
+    x
+```
+
+<h2>Links</h2>
+
+- <a href="https://github.com/knaw-huc/loghi">loghi project</a>
+- <a href="https://github.com/knaw-huc/pagexml">pagexml tools project</a>
+- <a href="https://www.primaresearch.org/tools/PAGEViewer">PAGEViewer</a>
