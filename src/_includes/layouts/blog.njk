@@ -1,9 +1,18 @@
 {% extends "layouts/base.njk" %}
 {% block content %}
-  <hr class="white-hr"/>
-  <article class="post-wrapper">
-    <h1>{{ title }}</h1>
-    <p>Posted on: {{ page.date | dutchDateFormat }}</p>
-    {{ content | safe }}
+  <article>
+    <div class="hero">
+      <div class="title-wrapper">
+        <div class="text">
+          <h1>{{ title }}</h1>
+        </div>
+      </div>
+
+      <img src="/images/wave.svg" class="wave" />
+    </div>
+    <div class="content">
+      <p>Posted on: {{ page.date | dutchDateFormat }}</p>
+      {{ content | safe }}
+    </div>
   </article>
 {% endblock %}

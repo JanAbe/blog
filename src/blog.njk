@@ -4,6 +4,7 @@ title: "Blog"
 
 {% extends "layouts/base.njk" %}
 {% block content %}
+  <div class="cards__wrapper">
     <ul class="cards">
         {% for item in collections.posts %}
         <li>
@@ -15,4 +16,5 @@ title: "Blog"
         </li>
         {% endfor %}
     </ul>
+  </div>
 {% endblock %}
