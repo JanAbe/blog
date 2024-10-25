@@ -15,7 +15,7 @@
 :root {
     --off-black: #292d3e;
     --off-white: #fefefc;
-    --flat-purple: #D980FA;
+    --flat-yellow: #ffeaa7;
     --width-content: 960px;
     --wave-height: 250px;
     --wave-height-small: 75px;
@@ -58,7 +58,7 @@ p {
 }
 
 header {
-    background-color: var(--flat-purple);
+    background-color: var(--flat-yellow);
 }
 
 .nav-list {
@@ -98,8 +98,8 @@ header {
     width: 100%;
 }
 
-.purple-hr {
-    border: 1px solid var(--flat-purple);
+.yellow-hr {
+    border: 1px solid var(--flat-yellow);
     width: 100%;
 }
 
@@ -128,7 +128,7 @@ article {
     font-family: "Outfit", sans-serif;
     font-size: 1.2rem;
     color: var(--off-black);
-    background-color: var(--flat-purple);
+    background-color: var(--flat-yellow);
     padding: 1rem;
     display: grid;
     place-content: center;;
@@ -169,7 +169,7 @@ table > tbody > tr > td:nth-child(2) {
 }
 
 .hero {
-    background-color: var(--flat-purple);
+    background-color: var(--flat-yellow);
     h1 {
         margin: 0;
         padding-top: 2rem;
