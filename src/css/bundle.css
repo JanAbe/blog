@@ -98,6 +98,11 @@ header {
     width: 100%;
 }
 
+.purple-hr {
+    border: 1px solid var(--flat-purple);
+    width: 100%;
+}
+
 article {
     margin-bottom: 2rem;
 
@@ -108,6 +113,7 @@ article {
         img {
             position: absolute;
             bottom: 0;
+            left: 0;
         }
     }
 
