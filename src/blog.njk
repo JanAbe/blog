@@ -12,6 +12,10 @@ title: "Blog"
                 <a href="/posts/{{ item.data.name }}" class="card__title">{{ item.data.title }}</a>
                 <hr class="black-hr"/>
                 <p>{{ item.data.description }}</p>
+
+                <div class="card__view-link__wrapper">
+                  <a href="/posts/{{ item.data.name }}" class="card__view-link">Read</a>
+                </div>
             </div>
         </li>
         {% endfor %}

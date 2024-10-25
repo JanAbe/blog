@@ -113,8 +113,8 @@ article {
 
 
     .content {
-        margin: auto;
-        padding: 1rem;
+        padding: 2rem;
+        max-width: 100%;
     }
 }
 
@@ -183,6 +183,7 @@ table > tbody > tr > td:nth-child(2) {
 
         .content {
             width: var(--width-content);
+            margin: auto;
         }
     }
 
