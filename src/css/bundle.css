@@ -103,6 +103,33 @@ header {
     width: 100%;
 }
 
+.heading-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    a {
+        font-size: 2rem;
+        text-decoration: none;
+        color: var(--flat-yellow);
+    }
+}
+
+.tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+
+    .tag {
+        background-color: var(--flat-yellow);
+        border-radius: 50px;
+        padding: .5rem 1rem;
+        color: var(--off-black);
+    }
+
+}
+
 article {
     margin-bottom: 2rem;
 
