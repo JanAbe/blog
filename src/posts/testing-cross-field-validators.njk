@@ -1,0 +1,186 @@
+---
+name: "testing-cross-field-validators"
+title: "How to test custom cross field validators in Angular 18"
+description: "Learn how to test custom cross field validators for your Angular 18 forms"
+date: 2024-10-26
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+---
+1. <a href="#creating-custom-validator">We need a custom validator</a>
+2. <a href="#creating-reactive-form">We need a reactive form</a>
+3. <a href="#displaying-errors">We need to edit our template</a>
+4. <a href="#testing-the-validator">We need to test our validator</a>
+
+<div class="heading-wrapper">
+  <a href="#creating-custom-validator">#</a>
+  <h2 id="creating-custom-validator">Creating a custom cross field validator</h2>
+</div>
+
+This validator checks whether the first field (A) comes before the other field (B).
+
+It returns an errorMap if a validation check fails and returns null if all is well.
+```typescript
+/**
+ * Checks whether control A comes before control B
+ * @param controlNameA the name of control A which holds a Date string
+ * @param controlNameB the name of control B which holds a Date string
+ */
+export function comesBefore(controlNameA: string, controlNameB: string): ValidatorFn {
+  return (controls: AbstractControl): ValidationErrors | null => {
+    const errorMap = { notBefore: true };
+
+    // retrieve the controls using the control names
+    const controlA: string = controls.get(controlNameA)?.value;
+    const controlB: string = controls.get(controlNameB)?.value;
+
+    // if for some reason the control values are falsy return an error map
+    if (!controlA || !controlB) {
+      return errorMap;
+    }
+
+    // convert the string values to Dates
+    const dateA: Date = new Date(controlA);
+    const dateB: Date = new Date(controlB);
+
+    // if dateA comes after dateB, return an error map
+    if (dateA > dateB) {
+      return errorMap;
+    }
+
+    // no errors are present => dateA comes before dateB
+    return null;
+  }
+}
+```
+
+<div class="heading-wrapper">
+  <a href="#creating-reactive-form">#</a>
+  <h2 id="creating-reactive-form">Creating a reactive form</h2>
+</div>
+
+Now that we have our custom validator, let's make a reactive form that uses it.
+
+Note that we passed the custom validator not to a specific control but to the FormGroup,
+a FormGroup can take another argument which in turn can accept an array of validators.
+
+```typescript
+@Component({
+  selector: 'app-my-form',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule
+  ],
+  templateUrl: './my-form.component.html',
+  styleUrl: './my-form.component.css'
+})
+export class MyFormComponent {
+  form = new FormGroup({
+    startDate: new FormControl(''),
+    endDate: new FormControl('')
+  }, {
+    validators: [comesBefore('startDate', 'endDate')]
+  });
+}
+```
+
+<div class="heading-wrapper">
+  <a href="#displaying-errors">#</a>
+  <h2 id="displaying-errors">Displaying errors in the template</h2>
+</div>
+
+This is just a simple form with two inputs.
+
+We want to validate that the start date comes before the end date and display an error message if this is not the case.
+
+Note the `@if` statement in the template which checks wether the form has an error named `notBefore`.
+It also checks whether the form is dirty (if a value has been altered) and displays an error message if that is the case.
+
+```html
+<form [formGroup]="form">
+  <div class="input-wrapper">
+    <label>Start date:</label>
+    <input type="date" name="startDate" formControlName="startDate">
+    @if (form.hasError('notBefore') && form.dirty) {
+      <p class="error-message">Start date must come before the end date!</p>
+    }
+  </div>
+
+  <div class="input-wrapper">
+    <label>End date:</label>
+    <input type="date" name="endDate" formControlName="endDate">
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+```
+
+This is what the result looks like:
+<img src="/images/cross-field-validators/img.png" />
+
+<div class="heading-wrapper">
+  <a href="#testing-the-validator">#</a>
+  <h2 id="testing-the-validator">Testing the validator</h2>
+</div>
+
+```typescript
+describe('comes-before validator', () => {
+  it('should return no error if control A comes before control B', () => {
+    const currentDate = new Date();
+    const previousYear = new Date();
+    previousYear.setFullYear(previousYear.getFullYear() - 1);
+
+    const result = comesBefore(
+      'controlA',
+      'controlB'
+    )(
+      new FormGroup({
+        controlA: new FormControl(previousYear.toDateString()),
+        controlB: new FormControl(currentDate.toDateString()),
+      })
+    );
+
+    const errorMap = null;
+    expect(result).toEqual(errorMap);
+  });
+
+  it('should return an error map if control A does not come before control B', () => {
+    const currentDate = new Date();
+    const previousYear = new Date();
+    previousYear.setFullYear(previousYear.getFullYear() - 1);
+
+    const result = comesBefore(
+      'controlA',
+      'controlB'
+    )(
+      new FormGroup({
+        controlA: new FormControl(currentDate.toDateString()),
+        controlB: new FormControl(previousYear.toDateString()),
+      })
+    );
+
+    const errorMap = { notBefore: true };
+    expect(result).toEqual(errorMap);
+  });
+});
+```
+
+Note this part:
+```typescript
+const result = comesBefore(
+  'controlA',
+  'controlB'
+)(
+  new FormGroup({
+    controlA: new FormControl(previousYear.toDateString()),
+    controlB: new FormControl(currentDate.toDateString()),
+  })
+);
+```
+
+Because the `comesBefore` validator returns a `ValidatorFn` it needs to be called again with an `AbstractControl` argument.
+
+```comesBefore(...)(...)```
+
+And `FormGroup` extends `AbstractControl` thus satisfies this requirement.
+
+Hope this helped!
