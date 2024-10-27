@@ -127,7 +127,11 @@ header {
         padding: .5rem 1rem;
         color: var(--off-black);
     }
+}
 
+video {
+    width: 100%;
+    border-radius: 10px;
 }
 
 article {
@@ -209,6 +213,10 @@ table > tbody > tr > td:nth-child(2) {
 }
 
 @media (min-width: 50em) {
+    video {
+        width: 50%;
+    }
+
     article {
         .hero {
             padding-bottom: var(--wave-height);

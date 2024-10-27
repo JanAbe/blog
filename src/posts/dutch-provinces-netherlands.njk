@@ -1,0 +1,421 @@
+---
+name: "dutch-provinces-netherlands"
+title: "How to make a map of the dutch provinces with Leaflet and Angular 18"
+description: "Learn how to make a map of dutch provinces with Leaflet and Angular 18. Make the map interactive and clickable aswell!"
+date: 2024-10-27
+layout: "layouts/blog.njk"
+templateEngineOverride: njk, md
+tags: [Angular 18, Leaflet, Map, Interactive, Netherlands, Provinces]
+---
+1. <a href="#install-leaflet">Install Leaflet + types</a>
+2. <a href="#create-html">Create the HTML structure</a>
+3. <a href="#initialize-map">Initialize your Leaflet map</a>
+3. <a href="#add-tilelayer">Add a tile layer</a>
+4. <a href="#geojson-of-dutch-provinces">Get GeoJSON data of dutch provinces</a>
+5. <a href="#add-geojson-layer">Add the GeoJSON layer</a>
+6. <a href="#make-map-interactive">Make the map interactive</a>
+7. <a href="#end">The end result</a>
+8. <a href="#useful-links">Useful links</a>
+
+The end result.
+
+<video controls>
+  <source src="/images/dutch-provinces.webm" type="video/webm" />
+</video>
+
+<div class="heading-wrapper">
+  <a href="#install-leaflet">#</a>
+  <h2 id="install-leaflet">Install Leaflet and Leaflet types</h2>
+</div>
+
+```shell
+npm install leaflet
+npm install --save-dev @types/leaflet
+```
+
+<div class="heading-wrapper">
+  <a href="#create-html">#</a>
+  <h2 id="create-html">Create the HTML structure</h2>
+</div>
+
+```html
+<div class="map-container">
+  <div id="map"></div>
+</div>
+```
+
+Style the HTML to make it use the entire screen.
+```css
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#map {
+  height: 100%;
+}
+```
+
+<div class="heading-wrapper">
+  <a href="#initialize-map">#</a>
+  <h2 id="initialize-map">Initialize your Leaflet map</h2>
+</div>
+
+Create a new component and add a map variable to it of type L.Map.
+```typescript
+import * as L from 'leaflet';
+```
+
+```typescript
+export class MapComponent implements AfterViewInit {
+  map: L.Map | undefined = undefined;
+
+  ngAfterViewInit(): void {
+    this.initializeMap();
+  }
+
+  initializeMap(): void {
+    this.map = L.map('map', {
+      center: L.latLng(52.15, 5.383333),
+      zoom: 8,
+    });
+  }
+}
+```
+
+Because the `L.map()` function expects an id of an HTML element where it places the map,
+this HTML element needs to exist before calling this function.
+
+That is why we initialize the map in the `ngAfterViewInit` function.
+This is a lifecycle hook that is called after Angular has fully initialized a component's view.
+
+<div class="heading-wrapper">
+  <a href="#add-tilelayer">#</a>
+  <h2 id="add-tilelayer">Add a tilelayer</h2>
+</div>
+
+The tilelayer draws the map tiles. So in order to see the map we need to add one.
+
+Edit the `initializeMap` function and add the layers argument.
+```typescript
+  initializeMap(): void {
+    this.map = L.map('map', {
+      center: L.latLng(52.15, 5.383333),
+      zoom: 8,
+      layers: [
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'),
+      ]
+    });
+```
+
+Now in order for it to be displayed properly we need to add the leaflet css to our Angular project.
+
+Add the following to your angular.json file.
+```json
+...
+"styles": [
+  "./node_modules/leaflet/dist/leaflet.css",
+  "src/styles.css"
+],
+...
+```
+
+<div class="heading-wrapper">
+  <a href="#geojson-of-dutch-provinces">#</a>
+  <h2 id="geojson-of-dutch-provinces">Get GeoJSON data of dutch provinces</h2>
+</div>
+Now we need to find GeoJSON of the dutch provinces.
+
+Luckily people have made this available to us.
+
+<a href="https://cartomap.github.io/nl/">cartomap</a>
+
+<a href="https://cartomap.github.io/nl/wgs84/provincie_2024.geojson">GeoJSON of dutch provinces</a>
+
+Copy the GeoJSON and store it in a variable in your project like so.
+```typescript
+import * as geojson from 'geojson';
+export const provincies: geojson.FeatureCollection = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[7.093, 52.838], [7.072, 52.845], [7.04, 52.873], [7.015, 52.873], [7.04, 52.908], [7.027, 52.919], [7.016, 52.925], [6.937, 52.993], [6.737, 53.119], [6.695, 53.121], [6.635, 53.106], [6.619, 53.132], [6.588, 53.146], [6.581, 53.164], [6.564, 53.158], [6.548, 53.181], [6.53, 53.195], [6.486, 53.204], [6.448, 53.196], [6.443, 53.188], [6.408, 53.178], [6.383, 53.15], [6.344, 53.087], [6.315, 53.094], [6.291, 53.1], [6.262, 53.114], [6.206, 53.115], [6.175, 53.136], [6.177, 53.167], [6.2, 53.195], [6.23, 53.218], [6.218, 53.242], [6.232, 53.247], [6.238, 53.262], [6.256, 53.271], [6.254, 53.289], [6.279, 53.303], [6.287, 53.341], [6.25, 53.349], [6.232, 53.367], [6.218, 53.364], [6.185, 53.403], [6.191, 53.411], [6.199, 53.408], [6.244, 53.415], [6.261, 53.414], [6.298, 53.4], [6.306, 53.393], [6.34, 53.408], [6.368, 53.416], [6.415, 53.422], [6.538, 53.431], [6.547, 53.429], [6.599, 53.438], [6.634, 53.451], [6.696, 53.462], [6.746, 53.466], [6.798, 53.455], [6.814, 53.463], [6.865, 53.45], [6.882, 53.44], [6.874, 53.408], [6.888, 53.396], [6.897, 53.356], [6.934, 53.333], [6.968, 53.319], [7.027, 53.302], [7.084, 53.298], [7.078, 53.267], [7.104, 53.252], [7.134, 53.25], [7.156, 53.243], [7.206, 53.236], [7.217, 53.215], [7.218, 53.198], [7.191, 53.162], [7.179, 53.139], [7.183, 53.122], [7.203, 53.113], [7.199, 53.081], [7.213, 53.011], [7.182, 52.942], [7.104, 52.864], [7.087, 52.85], [7.093, 52.838]]], [[[6.505, 53.551], [6.506, 53.538], [6.486, 53.527], [6.461, 53.539], [6.487, 53.554], [6.505, 53.551]]]]
+      },
+      "properties": {
+        "statcode": "PV20",
+        "jrstatcode": "2024PV20",
+        "statnaam": "Groningen",
+        "rubriek": "provincie",
+        "id": 1,
+        "FID": "provincie_gegeneraliseerd.7ff1a1db-9761-46b4-b8c0-8962f9c49e5a"
+      },
+      "id": "PV20"
+    },
+    ...
+  ]
+}
+```
+
+Note that we typed it as `geojson.FeatureCollection`.
+
+<div class="heading-wrapper">
+  <a href="#add-geojson-layer">#</a>
+  <h2 id="add-geojson-layer">Add the GeoJSON layer</h2>
+</div>
+
+Edit your `initializeMap` function and add the `L.geoJson` layer.
+
+It can take in a `FeatureCollection` as the first argument (that is why we added the typing) and an options argument as the second which is how we style it.
+```typescript
+  initializeMap(): void {
+    this.map = L.map('map', {
+      center: L.latLng(52.15, 5.383333),
+      zoom: 8,
+      layers: [
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'),
+        L.geoJson(provincies, {
+          style: _ => ({
+            color: '#3ECDEC',
+            fillColor: '#273c75',
+            fillOpacity: .7
+          }),
+          }
+        })
+      ]
+    });
+  }
+```
+
+<div class="heading-wrapper">
+  <a href="#make-map-interactive">#</a>
+  <h2 id="make-map-interactive">Make the map interactive</h2>
+</div>
+
+Making the map interactive is surprisingly easy.
+
+We add the `onEachFeature` property to the options argument of the `L.geoJson()` function.
+
+Then we can specify per action type what we want to happen.
+
+So when we want to execute code when a feature (which corresponds to a province in our case) gets clicked.
+We add a click handler to it.
+
+This is what it looks like in code:
+```typescript
+onEachFeature: (feature, layer) => {
+  layer.on({
+    mouseover: (event) => this.highlightProvince(event),
+    mouseout: (event) => this.unhighlightProvince(event),
+    click: (event) => this.clickProvince(event),
+  })
+}
+```
+
+Note that we pass an arrow function to each property so we keep the scope of `this`. Now `this` still points to the component instance.
+
+This is how your `initializeMap` function should look like.
+```typescript
+  initializeMap(): void {
+    this.map = L.map('map', {
+      center: L.latLng(52.15, 5.383333),
+      zoom: 8,
+      layers: [
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'),
+        L.geoJson(provincies, {
+          style: _ => ({
+            color: '#3ECDEC',
+            fillColor: '#273c75',
+            fillOpacity: .7
+          }),
+          onEachFeature: (feature, layer) => {
+            layer.on({
+              mouseover: (event) => this.highlightProvince(event),
+              mouseout: (event) => this.unhighlightProvince(event),
+              click: (event) => this.clickProvince(event),
+            })
+          }
+        })
+      ]
+    });
+  }
+```
+
+Now let's make it so that when you hover over a province or click on one, its colour changes.
+
+This function is the easiest because we don't need to do anything regarding state.
+We get the layer from the event and set its style.
+```typescript
+highlightProvince(event: LeafletMouseEvent): void {
+  const layer = event.target;
+  layer.setStyle({
+    fillOpacity: 1
+  });
+}
+```
+
+Now we also need to keep track of state. Because if a province has been clicked, we don't want to change its colour.
+
+That is why we need to introduce a `Map` to our component. In this map we keep track of which province (it's ID) has been selected.
+```typescript
+provinces: Map<number, boolean> = new Map<number, boolean>();
+```
+
+```typescript
+unhighlightProvince(event: LeafletMouseEvent): void {
+  const layer = event.target;
+  const provinceId: number = layer.feature.properties.id;
+
+  const isProvinceSelected = this.provinces.get(provinceId);
+  if (!isProvinceSelected) {
+    layer.setStyle({
+      fillOpacity: .7
+    });
+  }
+}
+```
+
+Here we check if a province has already been selected. If so, change it's colour, otherwise don't.
+```typescript
+clickProvince(event: LeafletMouseEvent): void {
+  const layer = event.target;
+
+  const provinceId: number = layer.feature.properties.id;
+  const isProvinceSelected = this.provinces.get(provinceId);
+
+  if (!isProvinceSelected) {
+    this.provinces.set(provinceId, true);
+    layer.setStyle({
+      fillOpacity: 1
+    });
+  } else {
+    this.provinces.set(provinceId, false);
+    layer.setStyle({
+      fillOpacity: .7
+    });
+  }
+}
+```
+
+<div class="heading-wrapper">
+  <a href="#end">#</a>
+  <h2 id="end">The end result</h2>
+</div>
+
+This is what your entire component should look like.
+
+```typescript
+import {AfterViewInit, Component} from '@angular/core';
+import * as L from 'leaflet';
+import {provincies} from '../../data/provincies';
+import {LeafletMouseEvent} from 'leaflet';
+
+@Component({
+  selector: 'app-map',
+  standalone: true,
+  imports: [],
+  templateUrl: './map.component.html',
+  styleUrl: './map.component.css'
+})
+export class MapComponent implements AfterViewInit {
+  map: L.Map | undefined = undefined;
+  provinces: Map<number, boolean> = new Map<number, boolean>();
+
+  ngAfterViewInit(): void {
+    this.provinces = new Map<number, boolean>([
+      [1, false],
+      [2, false],
+      [3, false],
+      [4, false],
+      [5, false],
+      [6, false],
+      [7, false],
+      [8, false],
+      [9, false],
+      [10, false],
+      [11, false],
+      [12, false],
+    ]);
+    this.initializeMap();
+  }
+
+  initializeMap(): void {
+    this.map = L.map('map', {
+      center: L.latLng(52.15, 5.383333),
+      zoom: 8,
+      layers: [
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'),
+        L.geoJson(provincies, {
+          style: _ => ({
+            color: '#3ECDEC',
+            fillColor: '#273c75',
+            fillOpacity: .7
+          }),
+          onEachFeature: (feature, layer) => {
+            layer.on({
+              mouseover: (event) => this.highlightProvince(event),
+              mouseout: (event) => this.unhighlightProvince(event),
+              click: (event) => this.clickProvince(event),
+            })
+          }
+        })
+      ]
+    });
+  }
+
+  highlightProvince(event: LeafletMouseEvent): void {
+    const layer = event.target;
+    layer.setStyle({
+      fillOpacity: 1
+    });
+  }
+
+  unhighlightProvince(event: LeafletMouseEvent): void {
+    const layer = event.target;
+    const provinceId: number = layer.feature.properties.id;
+
+    const isProvinceSelected = this.provinces.get(provinceId);
+    if (!isProvinceSelected) {
+      layer.setStyle({
+        fillOpacity: .7
+      });
+    }
+
+  }
+
+  clickProvince(event: LeafletMouseEvent): void {
+    const layer = event.target;
+
+    const provinceId: number = layer.feature.properties.id;
+    const isProvinceSelected = this.provinces.get(provinceId);
+
+    if (!isProvinceSelected) {
+      this.provinces.set(provinceId, true);
+      layer.setStyle({
+        fillOpacity: 1
+      });
+    } else {
+      this.provinces.set(provinceId, false);
+      layer.setStyle({
+        fillOpacity: .7
+      });
+    }
+  }
+}
+```
+
+<div class="heading-wrapper">
+  <a href="#useful-links">#</a>
+  <h2 id="useful-links">Useful links</h2>
+</div>
+<ul>
+  <li><a href="https://leafletjs.com/examples/choropleth/">leaflet</a></li>
+  <li><a href="https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet">digitalocean</a></li>
+</ul>
+
+Hope this helped!
